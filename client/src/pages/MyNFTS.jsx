@@ -29,7 +29,6 @@ function MyNFTS() {
 
     useEffect(() =>{
         loadMyNFTs();
-        console.log(myNFTs)
     },[])
 
     async function loadMyNFTs() {
@@ -56,6 +55,7 @@ function MyNFTS() {
             }
             return item
         }))
+        console.log(items)
         setMyNFTs(items)
         setLoadingState('loaded')
     }
@@ -63,10 +63,9 @@ function MyNFTS() {
 
     const items = myNFTs.map((item,i) => {
         return (
-            <Item key={i} name={item.name} price={item.price} image={item.image}/>
+            <Item key={item.tokenId} name={item.name} price={item.price} image={item.image} tokenId={item.tokenId} />
         )
     })
-    console.log(items)
     
     return (
         <div>

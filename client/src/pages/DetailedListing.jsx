@@ -54,8 +54,9 @@ const BuyItem = styled.button`
 function DetailedListing() {
     const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState, buyItem } = useContext(MarketplaceContext);
     const {tokenId} = useParams()
-    const filteredNFT = nfts.find(nft => (nft.tokenId == tokenId))
+    console.log(tokenId)
     console.log(nfts)
+    const filteredNFT = nfts.find(nft => (nft.tokenId == tokenId))
     console.log(filteredNFT)
     return (
         <Container>
@@ -66,7 +67,7 @@ function DetailedListing() {
                 <h2>Seller: {filteredNFT.seller}</h2>
                 <h2>Creator: {filteredNFT.creator}</h2>
                 <h2>Owner: {filteredNFT.owner}</h2>
-                <BuyItem onClick={buyItem(filteredNFT)}>Buy Item</BuyItem>
+                <BuyItem onClick={() => buyItem(filteredNFT)}>Buy Item</BuyItem>
             </DetailsContainer>
         </Container>
     )

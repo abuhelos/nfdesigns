@@ -34,6 +34,7 @@ const Price = styled.p`
 
 function Item(props) {
     const {storeCreator} = useParams()
+    console.log(props)
     return (
         <Link to={`/items/${props.tokenId}`}>
         <ListingContainer>
