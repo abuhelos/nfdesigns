@@ -1,12 +1,8 @@
 import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
-import Store from '../pages/Store'
 import StoreCard from '../components/StoreCard'
-import Item from '../components/Item'
-import dummyData from '../utils/dummyData'
 
 import NFLogo from '../assets/NFLogo.jpg'
 

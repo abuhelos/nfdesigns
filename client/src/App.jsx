@@ -8,6 +8,8 @@ import Sell from "./pages/Sell"
 import MyNFTS from "./pages/MyNFTS"
 import CreatorDashboard from "./pages/CreatorDashboard"
 import DetailedListing from './pages/DetailedListing'
+import DetailedMyNFT from './pages/DetailedMyNFT'
+import DetailedCreation from './pages/DetailedCreation'
 
 
 const Header = styled.header`
@@ -66,8 +68,16 @@ function App() {
           element={<MyNFTS/>}
           />
         <Route 
+          exact path = "mynfts/:tokenId"
+          element={<DetailedMyNFT/>}
+          />
+        <Route 
           exact path="/creatordashboard" 
           element={<CreatorDashboard/>}
+          />
+        <Route 
+          exact path = "/creatordashboard/:tokenId"
+          element={<DetailedCreation/>}
           />
       </Routes>
     </div>

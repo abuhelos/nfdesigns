@@ -24,6 +24,7 @@ contract Marketplace is ERC721URIStorage {
         address creator;
         uint256 price;
         bool sold;
+        bool resell;
     }
 
     event MarketItemCreated(
@@ -32,7 +33,8 @@ contract Marketplace is ERC721URIStorage {
         address owner,
         address creator,
         uint256 price,
-        bool sold
+        bool sold,
+        bool resell
     );
 
     constructor() ERC721("Metaverse Tokens", "METT") {
@@ -81,6 +83,7 @@ contract Marketplace is ERC721URIStorage {
             payable(address(this)),
             msg.sender,
             price,
+            false,
             false
         );
 
@@ -91,6 +94,7 @@ contract Marketplace is ERC721URIStorage {
             address(this),
             msg.sender,
             price,
+            false,
             false
         );
     }
@@ -105,7 +109,7 @@ contract Marketplace is ERC721URIStorage {
             msg.value == listingPrice,
             "Price must be equal to listing price"
         );
-        idToMarketItem[tokenId].sold = false;
+        idToMarketItem[tokenId].resell = true;
         idToMarketItem[tokenId].price = price;
         idToMarketItem[tokenId].seller = payable(msg.sender);
         idToMarketItem[tokenId].owner = payable(address(this));
@@ -124,7 +128,13 @@ contract Marketplace is ERC721URIStorage {
             "Please submit the asking price in order to complete the purchase"
         );
         idToMarketItem[tokenId].owner = payable(msg.sender);
-        idToMarketItem[tokenId].sold = true;
+
+        if (idToMarketItem[tokenId].sold == true) {
+            idToMarketItem[tokenId].resell = false;
+        }
+        if (idToMarketItem[tokenId].sold == false) {
+            idToMarketItem[tokenId].sold = true;
+        }
         idToMarketItem[tokenId].seller = payable(address(0));
         _itemsSold.increment();
         _transfer(address(this), msg.sender, tokenId);

@@ -74,5 +74,3 @@ function DetailedListing() {
 }
 
 export default DetailedListing;
-
-// nft items : name, price, tokenId, seller, owner, image

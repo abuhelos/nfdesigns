@@ -7,7 +7,8 @@ import axios from 'axios'
 import {Link, useParams} from 'react-router-dom'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
-import Item from '../components/Item'
+import ListingItem from '../components/ListingItem'
+import MyNFTItem from '../components/MyNFTItem'
 import dummyData from '../utils/dummyData'
 
 const Title = styled.h1`
@@ -23,47 +24,17 @@ const Products = styled.div`
 `
 
 function MyNFTS() {
-    const { connectWallet, connected, currentAccount, loadNFTs, nfts} = useContext(MarketplaceContext);
-    const [myNFTs, setMyNFTs] = useState([])
+    const { myNFTs, setMyNFTs, currentAccount, loadNFTs, nfts, loadMyNFTs} = useContext(MarketplaceContext);
     const [loadingState, setLoadingState] = useState('not-loaded')
 
     useEffect(() =>{
         loadMyNFTs();
-    },[])
-
-    async function loadMyNFTs() {
-        const web3Modal = new Web3Modal() 
-        const connection = await web3Modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        const signer = provider.getSigner()
-    
-        const contract = new ethers.Contract(contractAddress,contractABI,signer)
-        const data = await contract.fetchMyNFTs()
-    
-        const items = await Promise.all(data.map(async i=> {
-            const tokenUri = await contract.tokenURI(i.tokenId)
-            const meta = await axios.get(tokenUri)
-            let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-            let item = {
-                name: meta.data.name,
-                price,
-                tokenId: i.tokenId.toNumber(),
-                seller: i.seller,
-                owner: i.owner,
-                creator: i.creator,
-                image: meta.data.image,
-            }
-            return item
-        }))
-        console.log(items)
-        setMyNFTs(items)
         setLoadingState('loaded')
-    }
-
+    },[])
 
     const items = myNFTs.map((item,i) => {
         return (
-            <Item key={item.tokenId} name={item.name} price={item.price} image={item.image} tokenId={item.tokenId} />
+            <MyNFTItem key={item.tokenId} name={item.name} price={item.price} image={item.image} tokenId={item.tokenId} />
         )
     })
     

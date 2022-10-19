@@ -1,12 +1,11 @@
 import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
-import {Link, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
-import Item from '../components/Item'
-import dummyData from '../utils/dummyData'
+import ListingItem from '../components/ListingItem'
 
-const Title = styled.h1`
+const Title = styled.h2`
     margin: 30px;
     font-size: 1.5rem;
 `
@@ -20,11 +19,11 @@ const Products = styled.div`
 `
 
 function Store() {
-    const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState } = useContext(MarketplaceContext);
-
+    const { nfts,loadingState } = useContext(MarketplaceContext);
     const {storeCreator} = useParams()
-    //let filteredNFT = nfts.find(nft => (nft.creator == storeCreator))
-    const filteredNFT = nfts.filter(nft => nft.creator === storeCreator)
+
+    const filteredNFT = nfts.filter(nft => nft.creator === storeCreator && nft.resell === false)
+    const resaleNFT = nfts.filter(nft => nft.creator === storeCreator && nft.resell === true)
 
     return (
         <div>
@@ -35,10 +34,22 @@ function Store() {
                 <Products>
                     {
                         filteredNFT.map((nft,i) => (
-                            <Item key={i} name = {nft.name} price = {nft.price} image = {nft.image} tokenId={nft.tokenId}/>
+                            <ListingItem key={i} name = {nft.name} price = {nft.price} image = {nft.image} tokenId={nft.tokenId}/>
                         ))
                     }
                 </Products>
+            </div>
+            <div>
+                <Title>
+                        {loadingState === 'loaded' && !resaleNFT.length ? 'No Items For Resale' : 'Items For Resale'}
+                    </Title>
+                    <Products>
+                        {
+                            resaleNFT.map((nft,i) => (
+                                <ListingItem key={i} name = {nft.name} price = {nft.price} image = {nft.image} tokenId={nft.tokenId}/>
+                            ))
+                        }
+                    </Products>
             </div>
         </div>
     )

@@ -2,16 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
-/* 
-const CardContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: auto;
-    height: 400px;
-    background-color: grey;
-    border-radius: 25px;
-`
-*/
 const Image = styled.div`
     position: relative;
     width: 300px;

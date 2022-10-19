@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
 import {redirect} from 'react-router-dom'
+import {MarketplaceContext} from '../context/MarketplaceContext'
 import {create as ipfsHttpClient} from 'ipfs-http-client'
 import {Buffer} from 'buffer'
 import { ethers } from 'ethers'
@@ -54,6 +55,7 @@ const client = ipfsHttpClient({
 function Sell() {
     const [formData, setFormData] = useState({name: "", price: ""})
     const [fileUrl, setFileUrl] = useState(null)
+    const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState, buyItem, myNFTs, setMyNFTs} = useContext(MarketplaceContext);
 
     async function handleChange(e) {
         const file = e.target.files[0];
@@ -100,6 +102,7 @@ function Sell() {
         listingPrice = listingPrice.toString()
         let transaction = await contract.createToken(url, price, {value: listingPrice})
         await transaction.wait()
+        loadNFTs();
     }
 
     return (
