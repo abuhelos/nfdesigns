@@ -6,36 +6,7 @@ import StoreCard from '../components/StoreCard'
 
 import NFLogo from '../assets/NFLogo.jpg'
 
-const Title = styled.h1`
-    margin: 30px;
-    font-size: 1.5rem;
-`
-const Stores = styled.div`
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 250px 250px 250px 250px;
-    grid-templaate-rows: auto auto auto auto;
-    grid-row-gap: 50px;
-    grid-column-gap: 75px;
-`
-const ConnectWalletContainer = styled.div`
-    margin-top: 10px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
-const ConnectWalletButton = styled.button`
-    color: white;
-    background: black;
-    border-radius: 8px;
-    padding: 12px;
-    &:hover{
-        cursor: pointer;
-    }
-`
-
-function Home() {
+export default function Home() {
     const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState } = useContext(MarketplaceContext);
 
     useEffect(() => {
@@ -80,4 +51,31 @@ function Home() {
     )
 }
 
-export default Home
+const Title = styled.h1`
+    margin: 30px;
+    font-size: 1.5rem;
+`
+const Stores = styled.div`
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 250px 250px 250px 250px;
+    grid-templaate-rows: auto auto auto auto;
+    grid-row-gap: 50px;
+    grid-column-gap: 75px;
+`
+const ConnectWalletContainer = styled.div`
+    margin-top: 10px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`
+const ConnectWalletButton = styled.button`
+    color: white;
+    background: black;
+    border-radius: 8px;
+    padding: 12px;
+    &:hover{
+        cursor: pointer;
+    }
+`

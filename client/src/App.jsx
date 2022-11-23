@@ -11,30 +11,7 @@ import DetailedListing from './pages/DetailedListing'
 import DetailedMyNFT from './pages/DetailedMyNFT'
 import DetailedCreation from './pages/DetailedCreation'
 
-
-const Header = styled.header`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #010A10;
-  padding: 20px;
-`
-const Title = styled.div`
-  background-color: #FFFBF2;
-  padding: 10px;
-  border-radius: 4px;
-`
-const Links = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding-left: 10px;
-  padding-right: 10px;
-  justify-content: top;
-  color: #FFFBF2;
-`
-
-function App() {
+export default function App() {
   return (
     <div>
       <Header>
@@ -84,4 +61,24 @@ function App() {
   )
 }
 
-export default App
+const Header = styled.header`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #010A10;
+  padding: 20px;
+`
+const Title = styled.div`
+  background-color: #FFFBF2;
+  padding: 10px;
+  border-radius: 4px;
+`
+const Links = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding-left: 10px;
+  padding-right: 10px;
+  justify-content: top;
+  color: #FFFBF2;
+`

@@ -8,6 +8,56 @@ import { contractABI, contractAddress } from '../utils/constants'
 import Web3Modal from 'web3modal'
 import axios from 'axios'
 
+export default function DetailedMyNFT() {
+    const [formData, setFormData] = useState({price: ""})
+    const { loadNFTs, myNFTs} = useContext(MarketplaceContext);
+    const {tokenId} = useParams()
+    const filteredNFT = myNFTs.find(nft => (nft.tokenId == tokenId))
+
+    async function reSell(nft) {
+        const web3Modal = new Web3Modal() 
+        const connection = await web3Modal.connect()
+        const provider = new ethers.providers.Web3Provider(connection)
+        const signer = provider.getSigner()
+        let contract = new ethers.Contract(contractAddress, contractABI, signer)
+
+        let listingPrice = await contract.getListingPrice()
+        listingPrice = listingPrice.toString()
+        const price = ethers.utils.parseUnits(formData.price, 'ether')
+        const transaction = await contract.resellToken(nft.tokenId, price, {value: listingPrice})
+        await transaction.wait()
+        loadNFTs()
+    }
+
+    return (
+        <Container>
+            <Image image={filteredNFT.image}/>
+            <DetailsContainer>
+                <h1><strong>Item: {filteredNFT.name}</strong></h1>
+                <h2>Price: {filteredNFT.price}</h2>
+                <h2>Seller: {filteredNFT.seller}</h2>
+                <h2>Creator: {filteredNFT.creator}</h2>
+                <h2>Owner: {filteredNFT.owner}</h2>
+                
+
+                <Input 
+                    type="text"
+                    placeholder='Set Price (MATIC)'
+                    onChange={e => setFormData(prevFormData => {
+                        return {
+                            ...prevFormData,
+                            price: e.target.value
+                        }
+                    })}
+                    name="price"
+                    value={formData.price}
+                />
+                <ResellItem onClick={()=>{reSell(filteredNFT)}}>Resell Item</ResellItem>
+            </DetailsContainer>
+        </Container>
+    )
+}
+
 const Container = styled.div`
     display: flex;
     flex-direction: row;
@@ -60,55 +110,3 @@ const ResellItem = styled.button`
         cursor: pointer;
     }
 `
-
-function DetailedMyNFT() {
-    const [formData, setFormData] = useState({price: ""})
-    const { loadNFTs, myNFTs} = useContext(MarketplaceContext);
-    const {tokenId} = useParams()
-    const filteredNFT = myNFTs.find(nft => (nft.tokenId == tokenId))
-
-    async function reSell(nft) {
-        const web3Modal = new Web3Modal() 
-        const connection = await web3Modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        const signer = provider.getSigner()
-        let contract = new ethers.Contract(contractAddress, contractABI, signer)
-
-        let listingPrice = await contract.getListingPrice()
-        listingPrice = listingPrice.toString()
-        const price = ethers.utils.parseUnits(formData.price, 'ether')
-        const transaction = await contract.resellToken(nft.tokenId, price, {value: listingPrice})
-        await transaction.wait()
-        loadNFTs()
-    }
-
-    return (
-        <Container>
-            <Image image={filteredNFT.image}/>
-            <DetailsContainer>
-                <h1><strong>Item: {filteredNFT.name}</strong></h1>
-                <h2>Price: {filteredNFT.price}</h2>
-                <h2>Seller: {filteredNFT.seller}</h2>
-                <h2>Creator: {filteredNFT.creator}</h2>
-                <h2>Owner: {filteredNFT.owner}</h2>
-                
-
-                <Input 
-                    type="text"
-                    placeholder='Set Price (MATIC)'
-                    onChange={e => setFormData(prevFormData => {
-                        return {
-                            ...prevFormData,
-                            price: e.target.value
-                        }
-                    })}
-                    name="price"
-                    value={formData.price}
-                />
-                <ResellItem onClick={()=>{reSell(filteredNFT)}}>Resell Item</ResellItem>
-            </DetailsContainer>
-        </Container>
-    )
-}
-
-export default DetailedMyNFT;

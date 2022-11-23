@@ -11,19 +11,7 @@ import ListingItem from '../components/ListingItem'
 import MyNFTItem from '../components/MyNFTItem'
 import dummyData from '../utils/dummyData'
 
-const Title = styled.h1`
-    margin: 30px;
-    font-size: 1.5rem;
-`
-const Products = styled.div`
-    padding: 20px;
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-templaate-rows: auto auto auto auto;
-    grid-row-gap: 50px;
-`
-
-function MyNFTS() {
+export default function MyNFTS() {
     const { myNFTs, setMyNFTs, currentAccount, loadNFTs, nfts, loadMyNFTs} = useContext(MarketplaceContext);
     const [loadingState, setLoadingState] = useState('not-loaded')
 
@@ -48,4 +36,14 @@ function MyNFTS() {
     )
 }
 
-export default MyNFTS
+const Title = styled.h1`
+    margin: 30px;
+    font-size: 1.5rem;
+`
+const Products = styled.div`
+    padding: 20px;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-templaate-rows: auto auto auto auto;
+    grid-row-gap: 50px;
+`

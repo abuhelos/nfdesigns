@@ -2,6 +2,21 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link, useParams} from 'react-router-dom'
 
+export default function CreationItem(props) {
+    console.log(props)
+    return (
+        <Link to={`/creatordashboard/${props.tokenId}`}>
+        <ListingContainer>
+            <Image image={props.image}/>
+            <ListingInfo>
+                <Name>{props.name}</Name>
+                <Price>Price: {props.price} MATIC</Price>
+            </ListingInfo>
+        </ListingContainer>
+        </Link>
+    )
+}
+
 const ListingContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -29,22 +44,4 @@ const Name = styled.h1`
 const Price = styled.p`
     margin-top: 5px;
     color: #FFFBF2;
-
 `
-
-function CreationItem(props) {
-    console.log(props)
-    return (
-        <Link to={`/creatordashboard/${props.tokenId}`}>
-        <ListingContainer>
-            <Image image={props.image}/>
-            <ListingInfo>
-                <Name>{props.name}</Name>
-                <Price>Price: {props.price} MATIC</Price>
-            </ListingInfo>
-        </ListingContainer>
-        </Link>
-    )
-}
-
-export default CreationItem;

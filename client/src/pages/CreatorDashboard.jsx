@@ -4,19 +4,7 @@ import styled from 'styled-components'
 import {MarketplaceContext} from '../context/MarketplaceContext'
 import ListingItem from '../components/ListingItem'
 
-const Title = styled.h1`
-    margin: 30px;
-    font-size: 1.5rem;
-`
-const Products = styled.div`
-    padding: 20px;
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-templaate-rows: auto auto auto auto;
-    grid-row-gap: 50px;
-`
-
-function CreatorDashboard() {
+export default function CreatorDashboard() {
     const { myCreations, setMyCreations, loadCreations} = useContext(MarketplaceContext);
     const [loadingState, setLoadingState] = useState('not-loaded')
 
@@ -41,4 +29,14 @@ function CreatorDashboard() {
     )
 }
 
-export default CreatorDashboard
+const Title = styled.h1`
+    margin: 30px;
+    font-size: 1.5rem;
+`
+const Products = styled.div`
+    padding: 20px;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-templaate-rows: auto auto auto auto;
+    grid-row-gap: 50px;
+`

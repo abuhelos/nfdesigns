@@ -2,6 +2,18 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
+export default function StoreCard(props) {
+    return (
+        <Link to={`/${props.creator}`}>
+            <Image image={props.image}>
+                <Name>
+                    Store Creator: {props.creator}
+                </Name>
+            </Image>
+        </Link>
+    )
+}
+
 const Image = styled.div`
     position: relative;
     width: 300px;
@@ -19,17 +31,3 @@ const Name = styled.h1`
     bottom: 0px;
     font-size: 13px;
 `
-
-function StoreCard(props) {
-    return (
-        <Link to={`/${props.creator}`}>
-            <Image image={props.image}>
-                <Name>
-                    Store Creator: {props.creator}
-                </Name>
-            </Image>
-        </Link>
-    )
-}
-
-export default StoreCard;

@@ -9,6 +9,28 @@ import axios from 'axios'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
 
+export default function DetailedListing() {
+    const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState, buyItem } = useContext(MarketplaceContext);
+    const {tokenId} = useParams()
+    console.log(tokenId)
+    console.log(nfts)
+    const filteredNFT = nfts.find(nft => (nft.tokenId == tokenId))
+    console.log(filteredNFT)
+    return (
+        <Container>
+            <Image image={filteredNFT.image}/>
+            <DetailsContainer>
+                <h1><strong>Item: {filteredNFT.name}</strong></h1>
+                <h2>Price: {filteredNFT.price}</h2>
+                <h2>Seller: {filteredNFT.seller}</h2>
+                <h2>Creator: {filteredNFT.creator}</h2>
+                <h2>Owner: {filteredNFT.owner}</h2>
+                <BuyItem onClick={() => buyItem(filteredNFT)}>Buy Item</BuyItem>
+            </DetailsContainer>
+        </Container>
+    )
+}
+
 const Container = styled.div`
     display: flex;
     flex-direction: row;
@@ -50,27 +72,3 @@ const BuyItem = styled.button`
         cursor: pointer;
     }
 `
-
-function DetailedListing() {
-    const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState, buyItem } = useContext(MarketplaceContext);
-    const {tokenId} = useParams()
-    console.log(tokenId)
-    console.log(nfts)
-    const filteredNFT = nfts.find(nft => (nft.tokenId == tokenId))
-    console.log(filteredNFT)
-    return (
-        <Container>
-            <Image image={filteredNFT.image}/>
-            <DetailsContainer>
-                <h1><strong>Item: {filteredNFT.name}</strong></h1>
-                <h2>Price: {filteredNFT.price}</h2>
-                <h2>Seller: {filteredNFT.seller}</h2>
-                <h2>Creator: {filteredNFT.creator}</h2>
-                <h2>Owner: {filteredNFT.owner}</h2>
-                <BuyItem onClick={() => buyItem(filteredNFT)}>Buy Item</BuyItem>
-            </DetailsContainer>
-        </Container>
-    )
-}
-
-export default DetailedListing;

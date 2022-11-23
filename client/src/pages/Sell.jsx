@@ -8,28 +8,6 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import { contractABI, contractAddress } from '../utils/constants'
 
-// Styles --------------------------------------------------------------------------------
-const FormContainer = styled.form`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top 20px;
-`
-
-const Input = styled.input`
-    border: 2px solid black;
-`
-const SubmitButton = styled.button`
-    border: 2px solid black;
-    background-color: teal;
-
-    &:hover {
-        cursor: pointer;
-    }
-`
-// --------------------------------------------------------------------------------
-
 const projectId = '2FX4d5dPnCGAufDfOsFmZrCZ6iL';
 const projectSecret = 'f54da779adf3bdffe3e725b5f498fada';
 
@@ -45,14 +23,7 @@ const client = ipfsHttpClient({
     },
 });
 
-// pin.add pins the content which prevents ipfs garbage collection add this later
-// You are okay to use just add for now 
-/*client.pin.add('QmeGAVddnBSnKc1DLE7DLV9uuTqo5F7QbaveTjr45JUdQn').then((res) => {
-    console.log(res);
-});
-*/
-
-function Sell() {
+export default function Sell() {
     const [formData, setFormData] = useState({name: "", price: ""})
     const [fileUrl, setFileUrl] = useState(null)
     const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState, buyItem, myNFTs, setMyNFTs} = useContext(MarketplaceContext);
@@ -145,4 +116,22 @@ function Sell() {
     )
 }
 
-export default Sell;
+const FormContainer = styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top 20px;
+`
+
+const Input = styled.input`
+    border: 2px solid black;
+`
+const SubmitButton = styled.button`
+    border: 2px solid black;
+    background-color: teal;
+
+    &:hover {
+        cursor: pointer;
+    }
+`

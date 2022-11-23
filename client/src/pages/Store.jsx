@@ -5,20 +5,7 @@ import {useParams} from 'react-router-dom'
 import {MarketplaceContext} from '../context/MarketplaceContext'
 import ListingItem from '../components/ListingItem'
 
-const Title = styled.h2`
-    margin: 30px;
-    font-size: 1.5rem;
-`
-const Products = styled.div`
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 250px 250px 250px 250px;
-    grid-templaate-rows: auto auto auto auto;
-    grid-row-gap: 50px;
-    grid-column-gap: 20px;
-`
-
-function Store() {
+export default function Store() {
     const { nfts,loadingState } = useContext(MarketplaceContext);
     const {storeCreator} = useParams()
 
@@ -55,4 +42,15 @@ function Store() {
     )
 }
 
-export default Store;
+const Title = styled.h2`
+    margin: 30px;
+    font-size: 1.5rem;
+`
+const Products = styled.div`
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 250px 250px 250px 250px;
+    grid-templaate-rows: auto auto auto auto;
+    grid-row-gap: 50px;
+    grid-column-gap: 20px;
+`

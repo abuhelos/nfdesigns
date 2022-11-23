@@ -1,16 +1,6 @@
 import { useRouteError } from "react-router-dom";
 import styled from 'styled-components'
 
-const Error = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-
-`
-
 export default function ErrorPage() {
   const error = useRouteError();
   console.error(error);
@@ -25,3 +15,13 @@ export default function ErrorPage() {
     </Error>
   );
 }
+
+const Error = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+
+`
