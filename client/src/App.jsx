@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from "styled-components"
+import styled, {createGlobalStyle} from "styled-components"
 import {Routes, Route, Link} from "react-router-dom"
 
 import Home from "./pages/Home"
@@ -14,6 +14,7 @@ import DetailedCreation from './pages/DetailedCreation'
 export default function App() {
   return (
     <div>
+      <GlobalStyle/>
       <Header>
         <Link to="/" style={{textDecoration: 'none'}}><Title>NFDesigns</Title></Link>
         <Links>
@@ -60,6 +61,13 @@ export default function App() {
     </div>
   )
 }
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: 'Anek Devanagari', sans-serif;
+    font-family: 'Poppins', sans-serif;
+  }
+`
 
 const Header = styled.header`
   display: flex;
