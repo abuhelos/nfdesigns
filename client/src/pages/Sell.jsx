@@ -82,6 +82,7 @@ export default function Sell() {
         loadNFTs();
     }
 
+    let clicked = false; //So the x button and file input are not selected together
     return (
         <FormContainer onSubmit={handleSubmit(listItemForSale)}>
             <header style={{fontSize:'35px', fontWeight: '600', marginBottom: '20px'}}>Sell Item</header>
@@ -107,7 +108,11 @@ export default function Sell() {
             </FormField>
             <FormField>
                 <Label>Image</Label>
-                <FileInput for="fileInput">
+                <FileInput htmlFor="fileInput" onClick={e=>{
+                    if(clicked===true) {
+                        e.preventDefault()
+                    }
+                }}>
                     <input
                         id="fileInput"
                         type="file"
@@ -129,6 +134,7 @@ export default function Sell() {
                                 onClick={() => {
                                     setFileUrl(null)
                                     setFilePreview(null)
+                                    clicked=true;
                                 }}
                             />
                         </>  
