@@ -33,10 +33,11 @@ const Title = styled.h1`
     margin: 30px;
     font-size: 1.5rem;
 `
+
 const Products = styled.div`
     padding: 20px;
     display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-templaate-rows: auto auto auto auto;
-    grid-row-gap: 50px;
-`
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-row-gap: 40px;
+    grid-column-gap: 20px;
+    `

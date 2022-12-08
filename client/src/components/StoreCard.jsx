@@ -22,7 +22,12 @@ const Image = styled.div`
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 25px 25px 25px 25px;
-    background-image: url(${props=>props.image})
+    background-image: url(${props=>props.image});
+    overflow: hidden;
+    &:hover {
+        box-shadow: 0px 5px 5px 0px;
+        trasition: 10s;
+    }
 `
 const Name = styled.h1`
     color: #FFFBF2;

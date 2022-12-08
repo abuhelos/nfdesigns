@@ -27,10 +27,22 @@ const client = ipfsHttpClient({
 
 export default function Sell() {
     const [fileUrl, setFileUrl] = useState(null)
-    const [filePreview, setFilePreview] = useState()
+    const [filePreview, setFilePreview] = useState() //file object
+    const [preview, setPreview] = useState() //encoded file (base64 string)
     const {loadNFTs} = useContext(MarketplaceContext);
     const {register, handleSubmit, formState: {errors}} = useForm();
 
+    useEffect(() => {
+        if(filePreview) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result)
+            };
+            reader.readAsDataURL(filePreview);
+        } else {
+            setPreview(null);
+        }
+    },[filePreview])
 
     async function handleFile(e) {
         const file = e.target.files[0];
@@ -120,11 +132,11 @@ export default function Sell() {
                         accept="image/*"
                         {...register('file', {required: true, onChange: (e) => handleFile(e)})}
                     />
-                    {filePreview ? (
+                    {preview ? (
                         <>
                             <img
                                 style={{borderRadius: "10px"}}
-                                src = {fileUrl}
+                                src = {preview}
                                 height="257px"
                                 width="350px"
                             />  

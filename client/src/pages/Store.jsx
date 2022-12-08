@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
 import ListingItem from '../components/ListingItem'
+import dummyData from '../utils/dummyData'
 
 export default function Store() {
     const { nfts,loadingState } = useContext(MarketplaceContext);
@@ -19,6 +20,11 @@ export default function Store() {
                     {loadingState === 'loaded' && !nfts.length ? 'No Items Listed' : 'All Products'}
                 </Title>
                 <Products>
+                    {/* {
+                        dummyData.map((nft,i) => (
+                            <ListingItem key={i} name = {nft.name} price = {nft.price} image = {nft.image} tokenId={nft.tokenId}/>
+                        ))
+                    } */}
                     {
                         filteredNFT.map((nft,i) => (
                             <ListingItem key={i} name = {nft.name} price = {nft.price} image = {nft.image} tokenId={nft.tokenId}/>
@@ -45,12 +51,13 @@ export default function Store() {
 const Title = styled.h2`
     margin: 30px;
     font-size: 1.5rem;
+    font-weight: bold;
 `
 const Products = styled.div`
     padding: 20px;
     display: grid;
-    grid-template-columns: 250px 250px 250px 250px;
-    grid-templaate-rows: auto auto auto auto;
-    grid-row-gap: 50px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-row-gap: 40px;
     grid-column-gap: 20px;
-`
+    `
+    /* grid-template-columns: 250px 250px 250px 250px; */

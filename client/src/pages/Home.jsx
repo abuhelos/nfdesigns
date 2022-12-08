@@ -54,6 +54,7 @@ export default function Home() {
 const Title = styled.h1`
     margin: 30px;
     font-size: 1.5rem;
+    font-weight: bold;
 `
 const Stores = styled.div`
     padding: 20px;
