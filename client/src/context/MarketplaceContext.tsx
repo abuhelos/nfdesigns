@@ -1,35 +1,32 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, createContext} from 'react'
 
 import {ethers} from 'ethers'
 import { contractABI, contractAddress } from '../utils/constants'
 import Web3Modal from 'web3modal'
 import axios from 'axios'
 
-const MarketplaceContext = React.createContext()
+interface NFT {
+    creator: string,
+    image: string,
+    name: string,
+    owner: string
+    price: string,
+    resell: boolean,
+    seller: string,
+    tokenId: number | string,
+}
+
+const MarketplaceContext = createContext<any | null>(null);
 
 const {ethereum} = window;
 
-function createEthereumContract() {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const marketplaceContract = new ethers.Contract(contractAddress, contractABI, signer);
-
-    console.log({
-        provider,
-        signer,
-        marketplaceContract
-    })
-
-    return marketplaceContract;
-}
-
 function MarketplaceProvider({children}) {
-    const [currentAccount, setCurrentAccount] = useState("")
-    const [connected, setConnected] = useState(false)
-    const [nfts, setNfts] = useState([])
-    const [myNFTs, setMyNFTs] = useState([])
-    const [myCreations, setMyCreations] = useState([])
-    const [loadingState, setLoadingState] = useState('not-loaded')
+    const [currentAccount, setCurrentAccount] = useState<string>("")
+    const [connected, setConnected] = useState<boolean>(false)
+    const [nfts, setNfts] = useState<Array<NFT>>([])
+    const [myNFTs, setMyNFTs] = useState<Array<NFT>>([])
+    const [myCreations, setMyCreations] = useState<Array<NFT>>([])
+    const [loadingState, setLoadingState] = useState<string>('not-loaded')
 
     useEffect(() => {
         checkIfWalletIsConnected();
@@ -39,7 +36,7 @@ function MarketplaceProvider({children}) {
         try {
             if (!ethereum) return alert("Please install MetaMask.");
       
-            const accounts = await ethereum.request({ method: "eth_accounts" });
+            const accounts: string = await ethereum.request({ method: "eth_accounts" });
       
             if (accounts.length) {
               setCurrentAccount(accounts[0]);
@@ -52,23 +49,7 @@ function MarketplaceProvider({children}) {
           }
     }
 
-    async function connectWallet() {
-        try {
-            if (!ethereum) return alert("Please install MetaMask.");
-      
-            const accounts = await ethereum.request({ method: "eth_requestAccounts", });
-      
-            setCurrentAccount(accounts[0]);
-            setConnected(true);
-            window.location.reload();
-          } catch (error) {
-            console.log(error);
-      
-            throw new Error("No ethereum object");
-          }
-    }
-
-    async function buyItem(nft) {
+    async function buyItem(nft: NFT) {
         const web3Modal = new Web3Modal() 
         const connection = await web3Modal.connect()
         const provider = new ethers.providers.Web3Provider(connection)
@@ -90,16 +71,17 @@ function MarketplaceProvider({children}) {
         const signer = provider.getSigner()
     
         const contract = new ethers.Contract(contractAddress,contractABI,signer)
-        const data = await contract.fetchMarketItems()
+        const data: NFT[] = await contract.fetchMarketItems()
     
         const items = await Promise.all(data.map(async i=> {
-            const tokenUri = await contract.tokenURI(i.tokenId)
+            const tokenUri: string = await contract.tokenURI(i.tokenId)
             const meta = await axios.get(tokenUri)
             let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
             let item = {
                 name: meta.data.name,
                 price,
-                tokenId: i.tokenId.toNumber(),
+                //tokenId: i.tokenId.toNumber(),
+                tokenId: Number(i.tokenId),
                 seller: i.seller,
                 owner: i.owner,
                 creator: i.creator,
@@ -169,20 +151,19 @@ function MarketplaceProvider({children}) {
     return (
         <MarketplaceContext.Provider value={
             {
-                connectWallet, 
                 connected, 
                 currentAccount,
-                nfts,
-                setNfts,
                 loadingState,
-                loadNFTs, 
-                buyItem, 
-                myNFTs, 
-                setMyNFTs,
-                loadMyNFTs,
-                loadCreations,
                 myCreations,
-                setMyCreations
+                myNFTs, 
+                nfts,
+                buyItem, 
+                loadCreations,
+                loadNFTs, 
+                loadMyNFTs,
+                setMyCreations,
+                setMyNFTs,
+                setNfts,
             }}>
             {children}
         </MarketplaceContext.Provider>

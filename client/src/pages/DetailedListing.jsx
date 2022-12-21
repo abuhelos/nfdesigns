@@ -10,7 +10,7 @@ import axios from 'axios'
 import {MarketplaceContext} from '../context/MarketplaceContext'
 
 export default function DetailedListing() {
-    const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState, buyItem } = useContext(MarketplaceContext);
+    const {connected, currentAccount, loadNFTs, nfts,loadingState, buyItem } = useContext(MarketplaceContext);
     const {tokenId} = useParams()
     console.log(tokenId)
     console.log(nfts)

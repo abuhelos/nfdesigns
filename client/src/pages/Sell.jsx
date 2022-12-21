@@ -7,8 +7,8 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import { contractABI, contractAddress } from '../utils/constants'
 import { useForm } from 'react-hook-form'
-import imageIcon from '../assets/image-icon.svg'
-import deleteX from '../assets/delete-x.svg'
+import imageIcon from '/assets/image-icon.svg'
+import deleteX from '/assets/delete-x.svg'
 
 const projectId = '2FX4d5dPnCGAufDfOsFmZrCZ6iL';
 const projectSecret = 'f54da779adf3bdffe3e725b5f498fada';
