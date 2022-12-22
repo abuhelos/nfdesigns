@@ -16,7 +16,37 @@ interface NFT {
     tokenId: number | string,
 }
 
-const MarketplaceContext = createContext<any|null>(null);
+export interface MarketplaceContextProps {
+    connected: boolean, 
+    currentAccount: string,
+    loadingState: string,
+    myCreations: NFT[],
+    myNFTs: NFT[], 
+    nfts: NFT[],
+    buyItem: (nft: NFT) => Promise<void>, 
+    loadCreations: () => Promise<void>,
+    loadNFTs: () => Promise<void>, 
+    loadMyNFTs: () => Promise<void>,
+    setMyCreations: React.Dispatch<React.SetStateAction<NFT[]>>,
+    setMyNFTs: React.Dispatch<React.SetStateAction<NFT[]>>,
+    setNfts: React.Dispatch<React.SetStateAction<NFT[]>>,
+}
+
+const MarketplaceContext = createContext<MarketplaceContextProps>({
+    connected: true,
+    currentAccount: "",
+    loadingState: "",
+    myCreations: [],
+    myNFTs: [], 
+    nfts: [],
+    buyItem: ()=> {return Promise.resolve()}, 
+    loadCreations: ()=> {return Promise.resolve()},
+    loadNFTs: ()=> {return Promise.resolve()}, 
+    loadMyNFTs: ()=> {return Promise.resolve()},
+    setMyCreations:() => {},
+    setMyNFTs: () => {},
+    setNfts: () => {},
+});
 
 const {ethereum} = window;
 

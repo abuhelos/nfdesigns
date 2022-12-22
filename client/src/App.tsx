@@ -11,7 +11,7 @@ import DetailedListing from './pages/DetailedListing'
 import DetailedMyNFT from './pages/DetailedMyNFT'
 import DetailedCreation from './pages/DetailedCreation'
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <div>
       <GlobalStyle/>

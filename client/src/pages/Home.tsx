@@ -6,8 +6,8 @@ import StoreCard from '../components/StoreCard'
 
 const NFLogo = '/assets/NFLogo.jpg'
 
-export default function Home() {
-    const {connected, currentAccount, loadNFTs, nfts,loadingState } = useContext(MarketplaceContext);
+export default function Home(): JSX.Element {
+    const {loadNFTs, nfts, loadingState } = useContext(MarketplaceContext);
 
     useEffect(() => {
         loadNFTs()
