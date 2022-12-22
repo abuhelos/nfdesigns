@@ -16,7 +16,7 @@ interface NFT {
     tokenId: number | string,
 }
 
-const MarketplaceContext = createContext<any | null>(null);
+const MarketplaceContext = createContext<any|null>(null);
 
 const {ethereum} = window;
 
@@ -49,13 +49,17 @@ function MarketplaceProvider({children}) {
           }
     }
 
-    async function buyItem(nft: NFT) {
+    async function getContract() {
         const web3Modal = new Web3Modal() 
         const connection = await web3Modal.connect()
         const provider = new ethers.providers.Web3Provider(connection)
         const signer = provider.getSigner()
         const contract = new ethers.Contract(contractAddress, contractABI, signer)
+        return contract;
+    }
 
+    async function buyItem(nft: NFT) {
+        const contract = await getContract();
         const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
         const transaction = await contract.createMarketSale(nft.tokenId, {
             value: price
@@ -65,12 +69,7 @@ function MarketplaceProvider({children}) {
     }
 
     async function loadNFTs() {
-        const web3Modal = new Web3Modal() 
-        const connection = await web3Modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        const signer = provider.getSigner()
-    
-        const contract = new ethers.Contract(contractAddress,contractABI,signer)
+        const contract = await getContract();
         const data: NFT[] = await contract.fetchMarketItems()
     
         const items = await Promise.all(data.map(async i=> {
@@ -80,7 +79,6 @@ function MarketplaceProvider({children}) {
             let item = {
                 name: meta.data.name,
                 price,
-                //tokenId: i.tokenId.toNumber(),
                 tokenId: Number(i.tokenId),
                 seller: i.seller,
                 owner: i.owner,
@@ -95,13 +93,8 @@ function MarketplaceProvider({children}) {
     }
 
     async function loadMyNFTs() {
-        const web3Modal = new Web3Modal() 
-        const connection = await web3Modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        const signer = provider.getSigner()
-    
-        const contract = new ethers.Contract(contractAddress,contractABI,signer)
-        const data = await contract.fetchMyNFTs()
+        const contract = await getContract()
+        const data: NFT[] = await contract.fetchMyNFTs()
     
         const items = await Promise.all(data.map(async i=> {
             const tokenUri = await contract.tokenURI(i.tokenId)
@@ -110,10 +103,11 @@ function MarketplaceProvider({children}) {
             let item = {
                 name: meta.data.name,
                 price,
-                tokenId: i.tokenId.toNumber(),
+                tokenId: Number(i.tokenId),
                 seller: i.seller,
                 owner: i.owner,
                 creator: i.creator,
+                resell: i.resell,
                 image: meta.data.image,
             }
             return item
@@ -122,13 +116,8 @@ function MarketplaceProvider({children}) {
     }
 
     async function loadCreations() {
-        const web3Modal = new Web3Modal() 
-        const connection = await web3Modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        const signer = provider.getSigner()
-    
-        const contract = new ethers.Contract(contractAddress,contractABI,signer)
-        const data = await contract.fetchItemsListed()
+        const contract = await getContract()
+        const data: NFT[] = await contract.fetchItemsListed()
     
         const items = await Promise.all(data.map(async i=> {
             const tokenUri = await contract.tokenURI(i.tokenId)
@@ -137,10 +126,11 @@ function MarketplaceProvider({children}) {
             let item = {
                 name: meta.data.name,
                 price,
-                tokenId: i.tokenId.toNumber(),
+                tokenId: Number(i.tokenId),
                 seller: i.seller,
                 owner: i.owner,
                 creator: i.creator,
+                resell: i.resell,
                 image: meta.data.image,
             }
             return item
