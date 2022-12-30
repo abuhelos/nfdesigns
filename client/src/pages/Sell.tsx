@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect, useRef} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {MarketplaceContext} from '../context/MarketplaceContext'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -9,6 +9,12 @@ import {create as ipfsHttpClient} from 'ipfs-http-client'
 import { contractABI, contractAddress } from '../utils/constants'
 
 import {Buffer} from 'buffer'
+
+interface FormData {
+    name: string,
+    price: string,
+    file: any
+}
 
 const  imageIcon = '/assets/image-icon.svg'
 const  deleteX = '/assets/delete-x.svg'
@@ -29,7 +35,7 @@ const client = ipfsHttpClient({
 });
 
 export default function Sell() {
-    const [fileUrl, setFileUrl] = useState<string|null>(null)
+    const [fileUrl, setFileUrl] = useState<string>("")
     const [filePreview, setFilePreview] = useState<Blob|null>()
     const [preview, setPreview] = useState<string|null>()
 
@@ -48,7 +54,7 @@ export default function Sell() {
         }
     },[filePreview])
 
-    async function handleFile(e: React.ChangeEvent<HTMLInputElement>): Promise<any> {
+    async function handleFile(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
         if(!e.target.files){return}
         const file = e.target.files[0]
         if(!file){return} // Prevents deleting image preview if file selection is canceled (Google Chrome) 
@@ -67,8 +73,7 @@ export default function Sell() {
         }
     }
 
-    async function uploadToIPFS(name, price, fileUrl) {
-        console.log(fileUrl)
+    async function uploadToIPFS(name: string, price: string, fileUrl: string): Promise<string|undefined> {
         if(!name || !price || !fileUrl) return
         const data = JSON.stringify({
             name, image: fileUrl
@@ -82,8 +87,7 @@ export default function Sell() {
         }
     }
 
-    async function listItemForSale(data) {
-        console.log(data)
+    async function listItemForSale(data: FormData): Promise<void> {
         const url = await uploadToIPFS(data.name, data.price, fileUrl)
         const web3Modal = new Web3Modal() 
         const connection = await web3Modal.connect()
@@ -91,15 +95,25 @@ export default function Sell() {
         const signer = provider.getSigner()
 
         const price = ethers.utils.parseUnits(data.price, 'ether')
-        let contract = new ethers.Contract(contractAddress, contractABI, signer)
-        let listingPrice = await contract.getListingPrice()
+        const contract = new ethers.Contract(contractAddress, contractABI, signer)
+        let listingPrice: string | number = await contract.getListingPrice()
         listingPrice = listingPrice.toString()
-        let transaction = await contract.createToken(url, price, {value: listingPrice})
-        await transaction.wait()
+
+        try {
+            let transaction = await contract.createToken(url, price, {value: listingPrice})
+            await transaction.wait()
+        } catch (e) {
+            console.log(e)
+            if(e.data.message.includes('insufficient funds')){
+                alert('Error: Insufficient Funds.')
+            } else {
+                alert(`Error: ${e.message}\nMessage: ${e.data.message ? e.data.message : e.data.details}`)
+            }
+        }
         loadNFTs();
     }
 
-    let clicked = false; //So the x button and file input are not selected together
+    let clicked = false; //Prevents x button and file input from being selected together
     return (
         <FormContainer onSubmit={handleSubmit(listItemForSale)}>
             <header style={{fontSize:'35px', fontWeight: '600', marginBottom: '20px'}}>Sell Item</header>
@@ -150,7 +164,7 @@ export default function Sell() {
                                 src = {deleteX}
                                 height="50px"
                                 onClick={() => {
-                                    setFileUrl(null)
+                                    setFileUrl("")
                                     setFilePreview(null)
                                     clicked=true;
                                 }}
