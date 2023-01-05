@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
+import { ImageProps, NFTItemComp } from '../schema'
 
-export default function CreationItem(props) {
-    console.log(props)
+export default function CreationItem(props: NFTItemComp) {
     return (
         <Link to={`/creatordashboard/${props.tokenId}`}>
         <ListingContainer>
@@ -25,7 +25,7 @@ const ListingContainer = styled.div`
     background-color: grey;
     border-radius: 25px;
 `
-const Image = styled.img`
+const Image = styled.img<ImageProps>`
     width: auto;
     height: 65%;
     background-position: 50% 50%;

@@ -1,19 +1,47 @@
-export interface BaseSyntheticEvent<E = object, C = any, T = any> {
-    nativeEvent: E;
-    currentTarget: C;
-    target: T;
-    bubbles: boolean;
-    cancelable: boolean;
-    defaultPrevented: boolean;
-    eventPhase: number;
-    isTrusted: boolean;
-    preventDefault(): void;
-    isDefaultPrevented(): boolean;
-    stopPropagation(): void;
-    isPropagationStopped(): boolean;
-    persist(): void;
-    timeStamp: number;
-    type: string;
+export interface ImageProps {
+    hovered?: boolean | React.MutableRefObject<null>
+    image?: string
 }
-
-export interface SyntheticEvent<T = Element, E = Event> extends BaseSyntheticEvent<E, EventTarget & T, EventTarget> {}
+export interface NFTItemComp {
+    image: string, 
+    name: string, 
+    price: string, 
+    tokenId: number
+}
+export interface NFT {
+    creator: string,
+    image: string,
+    name: string,
+    owner: string
+    price: string,
+    resell: boolean,
+    seller: string,
+    tokenId: number | string,
+}
+export interface RawNFT { 
+    // NFT data stroed on the blockchain (everything except the image)
+    creator: string,
+    name: string,
+    owner: string
+    price: string,
+    resell: boolean,
+    seller: string,
+    tokenId: number | string,
+}
+export interface MarketplaceContextProps {
+    connected: boolean, 
+    currentAccount: string,
+    loadingState: string,
+    myCreations: NFT[],
+    myNFTs: NFT[], 
+    nfts: NFT[],
+    buyItem: (nft: NFT) => Promise<void>, 
+    getContract: () => Promise<any>, //or ethers.Contract
+    loadCreations: () => Promise<void>,
+    loadNFTs: () => Promise<void>, 
+    loadMyNFTs: () => Promise<void>,
+    reSell: (nft: NFT | undefined, price: string) => Promise<void>,
+    setMyCreations: React.Dispatch<React.SetStateAction<NFT[]>>,
+    setMyNFTs: React.Dispatch<React.SetStateAction<NFT[]>>,
+    setNfts: React.Dispatch<React.SetStateAction<NFT[]>>,
+}

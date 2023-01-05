@@ -39,7 +39,7 @@ export default function Sell() {
     const [filePreview, setFilePreview] = useState<Blob|null>()
     const [preview, setPreview] = useState<string|null>()
 
-    const {loadNFTs} = useContext(MarketplaceContext);
+    const {loadNFTs, getContract} = useContext(MarketplaceContext);
     const {register, handleSubmit, formState: {errors}} = useForm();
 
     useEffect(() => {
@@ -88,14 +88,10 @@ export default function Sell() {
     }
 
     async function listItemForSale(data: FormData): Promise<void> {
+        const contract = await getContract();
         const url = await uploadToIPFS(data.name, data.price, fileUrl)
-        const web3Modal = new Web3Modal() 
-        const connection = await web3Modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        const signer = provider.getSigner()
-
         const price = ethers.utils.parseUnits(data.price, 'ether')
-        const contract = new ethers.Contract(contractAddress, contractABI, signer)
+        
         let listingPrice: string | number = await contract.getListingPrice()
         listingPrice = listingPrice.toString()
 

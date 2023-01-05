@@ -2,7 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
-export default function StoreCard(props) {
+import { ImageProps, NFT } from '../schema'
+
+export default function StoreCard(props: {creator: string, image: string}) {
     return (
         <Link to={`/${props.creator}`}>
             <Image image={props.image}>
@@ -14,7 +16,7 @@ export default function StoreCard(props) {
     )
 }
 
-const Image = styled.div`
+const Image = styled.div<ImageProps>`
     position: relative;
     width: 300px;
     height: 400px;

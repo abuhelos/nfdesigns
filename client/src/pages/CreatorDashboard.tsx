@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
 import ListingItem from '../components/ListingItem'
+import CreationItem from '../components/CreationItem'
 
 export default function CreatorDashboard() {
     const { myCreations, setMyCreations, loadCreations} = useContext(MarketplaceContext);

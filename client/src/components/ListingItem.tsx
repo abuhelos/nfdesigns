@@ -1,12 +1,12 @@
 import React from 'react'
-import styled, {keyframes} from 'styled-components'
+import styled from 'styled-components'
 import {Link} from 'react-router-dom'
+
+import { ImageProps, NFTItemComp } from '../schema'
 import useHover from '../hooks/useHover'
 
-export default function ListingItem(props) {
+export default function ListingItem(props: NFTItemComp) {
     const [hovered, ref] = useHover();
-    console.log(props)
-    console.log(hovered)
     return (
         <Link to={`/items/${props.tokenId}`}>
             <ListingContainer ref={ref}>
@@ -45,7 +45,7 @@ const Price = styled.p`
     color: #FFFBF2;
 `
 
-const Image = styled.div`
+const Image = styled.div<ImageProps>`
     width: 100%;
     height: 100%;
     border-radius: 25px 25px 0px 0px;

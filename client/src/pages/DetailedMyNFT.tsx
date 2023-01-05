@@ -1,25 +1,25 @@
 import React, {useState, useContext} from 'react'
 import {useParams} from 'react-router-dom'
 import styled from 'styled-components'
-import {MarketplaceContext} from '../context/MarketplaceContext'
 
-export default function DetailedCreation() {
+import {MarketplaceContext} from '../context/MarketplaceContext'
+import { ImageProps } from '../schema'
+
+export default function DetailedMyNFT() {
     const [formData, setFormData] = useState({price: ""})
-    const { myCreations} = useContext(MarketplaceContext);
+    const {reSell, myNFTs} = useContext(MarketplaceContext);
     const {tokenId} = useParams()
-    const filteredNFT = myCreations.find(nft => (nft.tokenId == tokenId))
+    const filteredNFT = myNFTs.find(nft => (nft.tokenId == tokenId))
 
     return (
         <Container>
-            <Image image={filteredNFT.image}/>
+            <Image image={filteredNFT?.image}/>
             <DetailsContainer>
-                <h1><strong>Item: {filteredNFT.name}</strong></h1>
-                <h2>Price: {filteredNFT.price}</h2>
-                <h2>Seller: {filteredNFT.seller}</h2>
-                <h2>Creator: {filteredNFT.creator}</h2>
-                <h2>Owner: {filteredNFT.owner}</h2>
-                
-
+                <h1><strong>Item: {filteredNFT?.name}</strong></h1>
+                <h2>Price: {filteredNFT?.price}</h2>
+                <h2>Seller: {filteredNFT?.seller}</h2>
+                <h2>Creator: {filteredNFT?.creator}</h2>
+                <h2>Owner: {filteredNFT?.owner}</h2>
                 <Input 
                     type="text"
                     placeholder='Set Price (MATIC)'
@@ -32,7 +32,7 @@ export default function DetailedCreation() {
                     name="price"
                     value={formData.price}
                 />
-                <ResellItem onClick={()=>{reSell(filteredNFT)}}>Resell Item</ResellItem>
+                <ResellItem onClick={()=>{reSell(filteredNFT, formData.price)}}>Resell Item</ResellItem>
             </DetailsContainer>
         </Container>
     )
@@ -48,7 +48,7 @@ const Container = styled.div`
     border-radius: 50px;
     height: 500px;
 `
-const Image = styled.img`
+const Image = styled.img<ImageProps>`
     height: auto; 
     width: 300px;
     background-position: 50% 50%;

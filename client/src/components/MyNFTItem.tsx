@@ -1,9 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import useHover from '../hooks/useHover'
 
-export default function MyNFTItem(props) {
+import useHover from '../hooks/useHover'
+import { ImageProps, NFTItemComp } from '../schema'
+
+export default function MyNFTItem(props: NFTItemComp) {
+    console.log(props)
     const [hovered, ref] = useHover()
     return (
         <Link to={`/mynfts/${props.tokenId}`}>
@@ -43,7 +46,7 @@ const Price = styled.p`
     color: #FFFBF2;
 `
 
-const Image = styled.div`
+const Image = styled.div<ImageProps>`
     width: 100%;
     height: 100%;
     border-radius: 25px 25px 0px 0px;
@@ -55,4 +58,4 @@ const Image = styled.div`
     
     transform: ${props=>props.hovered ? `scale(1.1)` : `scale(1)`};
     transition: .5s;
-    `
+`
