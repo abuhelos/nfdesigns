@@ -1,19 +1,20 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
 import StoreCard from '../components/StoreCard'
 
-import NFLogo from '../assets/NFLogo.jpg'
+const NFLogo = '/assets/NFLogo.jpg'
 
-export default function Home() {
-    const { connectWallet, connected, currentAccount, loadNFTs, nfts,loadingState } = useContext(MarketplaceContext);
+export default function Home(): JSX.Element {
+    const {loadNFTs, nfts, loadingState } = useContext(MarketplaceContext);
 
     useEffect(() => {
         loadNFTs()
     },[])
 
-    const unfilteredCreators = [];
+    const unfilteredCreators: string[] = [];
+    
     nfts.map(nft => {
         unfilteredCreators.push(nft.creator)
     })
@@ -23,18 +24,6 @@ export default function Home() {
     
     return (
         <div>
-            <ConnectWalletContainer>
-                {!connected ? 
-                        <ConnectWalletButton type="button" onClick={connectWallet}>
-                            Connect Your Wallet
-                        </ConnectWalletButton>
-                : 
-                <div>
-                    Welcome: {currentAccount}
-                </div>
-                }
-            </ConnectWalletContainer>
-
             <div>
                 <Title>
                     {loadingState === 'loaded' && !nfts.length ? 'No Stores Listed' : 'All Stores'}
@@ -63,20 +52,4 @@ const Stores = styled.div`
     grid-templaate-rows: auto auto auto auto;
     grid-row-gap: 50px;
     grid-column-gap: 75px;
-`
-const ConnectWalletContainer = styled.div`
-    margin-top: 10px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
-const ConnectWalletButton = styled.button`
-    color: white;
-    background: black;
-    border-radius: 8px;
-    padding: 12px;
-    &:hover{
-        cursor: pointer;
-    }
 `

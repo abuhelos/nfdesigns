@@ -11,7 +11,7 @@ import DetailedListing from './pages/DetailedListing'
 import DetailedMyNFT from './pages/DetailedMyNFT'
 import DetailedCreation from './pages/DetailedCreation'
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <div>
       <GlobalStyle/>
@@ -30,31 +30,31 @@ export default function App() {
           element={<Home />} 
           />
         <Route 
-            exact path="/:storeCreator" 
-            element={<Store/>}
+          path="/:storeCreator" 
+          element={<Store/>}
           />
         <Route
-          exact path="/items/:tokenId"
+          path="/items/:tokenId"
           element={<DetailedListing/>}
           />
         <Route 
-          exact path="/sell" 
+          path="/sell" 
           element={<Sell/>}
           />
         <Route 
-          exact path="/mynfts" 
+          path="/mynfts" 
           element={<MyNFTS/>}
           />
         <Route 
-          exact path = "mynfts/:tokenId"
+          path = "mynfts/:tokenId"
           element={<DetailedMyNFT/>}
           />
         <Route 
-          exact path="/creatordashboard" 
+          path="/creatordashboard" 
           element={<CreatorDashboard/>}
           />
         <Route 
-          exact path = "/creatordashboard/:tokenId"
+          path = "/creatordashboard/:tokenId"
           element={<DetailedCreation/>}
           />
       </Routes>

@@ -2,26 +2,27 @@ import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
-import ListingItem from '../components/ListingItem'
+import MyNFTItem from '../components/MyNFTItem'
+import dummyData from '../utils/dummyData'
 
-export default function CreatorDashboard() {
-    const { myCreations, setMyCreations, loadCreations} = useContext(MarketplaceContext);
+export default function MyNFTS() {
+    const { myNFTs, loadMyNFTs} = useContext(MarketplaceContext);
     const [loadingState, setLoadingState] = useState('not-loaded')
 
     useEffect(() =>{
-        loadCreations();
+        loadMyNFTs();
+        setLoadingState('loaded')
     },[])
 
-    const items = myCreations.map((item,i) => {
-        console.log(myCreations)
+    const items = myNFTs.map((item,i) => {
         return (
-            <ListingItem key={i} name={item.name} price={item.price} image={item.image} tokenId={item.tokenId}/>
+            <MyNFTItem key={item.tokenId} name={item.name} price={item.price} image={item.image} tokenId={item.tokenId} />
         )
     })
-
+    
     return (
         <div>
-            <Title>{loadingState === 'loaded' && !myCreations.length ? 'No Items' : 'My Listings'}</Title>
+            <Title>{loadingState === 'loaded' && !myNFTs.length ? 'No Items' : 'My NFTs'}</Title>
             <Products>
                 {items}
             </Products>
@@ -33,7 +34,6 @@ const Title = styled.h1`
     margin: 30px;
     font-size: 1.5rem;
 `
-
 const Products = styled.div`
     padding: 20px;
     display: grid;

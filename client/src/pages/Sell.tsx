@@ -1,17 +1,26 @@
-import React, {useState, useContext, useEffect, useRef} from 'react'
-import styled from 'styled-components'
+import React, {useState, useContext, useEffect} from 'react'
 import {MarketplaceContext} from '../context/MarketplaceContext'
-import {create as ipfsHttpClient} from 'ipfs-http-client'
-import {Buffer} from 'buffer'
+import { useForm } from 'react-hook-form'
+import styled from 'styled-components'
+
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
+import {create as ipfsHttpClient} from 'ipfs-http-client'
 import { contractABI, contractAddress } from '../utils/constants'
-import { useForm } from 'react-hook-form'
-import imageIcon from '../assets/image-icon.svg'
-import deleteX from '../assets/delete-x.svg'
 
-const projectId = '2FX4d5dPnCGAufDfOsFmZrCZ6iL';
-const projectSecret = 'f54da779adf3bdffe3e725b5f498fada';
+import {Buffer} from 'buffer'
+
+interface FormData {
+    name: string,
+    price: string,
+    file: any
+}
+
+const  imageIcon = '/assets/image-icon.svg'
+const  deleteX = '/assets/delete-x.svg'
+
+const projectId = '2FX4d5dPnCGAufDfOsFmZrCZ6iL'; //This should not be exposed
+const projectSecret = 'f54da779adf3bdffe3e725b5f498fada'; //This should not be exposed
 
 const auth =
     'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
@@ -26,17 +35,18 @@ const client = ipfsHttpClient({
 });
 
 export default function Sell() {
-    const [fileUrl, setFileUrl] = useState(null)
-    const [filePreview, setFilePreview] = useState() //file object
-    const [preview, setPreview] = useState() //encoded file (base64 string)
-    const {loadNFTs} = useContext(MarketplaceContext);
+    const [fileUrl, setFileUrl] = useState<string>("")
+    const [filePreview, setFilePreview] = useState<Blob|null>()
+    const [preview, setPreview] = useState<string|null>()
+
+    const {loadNFTs, getContract} = useContext(MarketplaceContext);
     const {register, handleSubmit, formState: {errors}} = useForm();
 
     useEffect(() => {
         if(filePreview) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setPreview(reader.result)
+                setPreview(reader.result as string)
             };
             reader.readAsDataURL(filePreview);
         } else {
@@ -44,9 +54,10 @@ export default function Sell() {
         }
     },[filePreview])
 
-    async function handleFile(e) {
-        const file = e.target.files[0];
-        if(!file){return} // DONT DELETE! Prevents deleting image preview if file selection is canceled (Google Chrome) 
+    async function handleFile(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
+        if(!e.target.files){return}
+        const file = e.target.files[0]
+        if(!file){return} // Prevents deleting image preview if file selection is canceled (Google Chrome) 
         setFilePreview(file)
         try {
             const added = await client.add(
@@ -62,8 +73,7 @@ export default function Sell() {
         }
     }
 
-    async function uploadToIPFS(name, price, fileUrl) {
-        console.log(fileUrl)
+    async function uploadToIPFS(name: string, price: string, fileUrl: string): Promise<string|undefined> {
         if(!name || !price || !fileUrl) return
         const data = JSON.stringify({
             name, image: fileUrl
@@ -77,24 +87,29 @@ export default function Sell() {
         }
     }
 
-    async function listItemForSale(data) {
-        console.log(data)
+    async function listItemForSale(data: FormData): Promise<void> {
+        const contract = await getContract();
         const url = await uploadToIPFS(data.name, data.price, fileUrl)
-        const web3Modal = new Web3Modal() 
-        const connection = await web3Modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        const signer = provider.getSigner()
-
         const price = ethers.utils.parseUnits(data.price, 'ether')
-        let contract = new ethers.Contract(contractAddress, contractABI, signer)
-        let listingPrice = await contract.getListingPrice()
+        
+        let listingPrice: string | number = await contract.getListingPrice()
         listingPrice = listingPrice.toString()
-        let transaction = await contract.createToken(url, price, {value: listingPrice})
-        await transaction.wait()
+
+        try {
+            let transaction = await contract.createToken(url, price, {value: listingPrice})
+            await transaction.wait()
+        } catch (e) {
+            console.log(e)
+            if(e.data.message.includes('insufficient funds')){
+                alert('Error: Insufficient Funds.')
+            } else {
+                alert(`Error: ${e.message}\nMessage: ${e.data.message ? e.data.message : e.data.details}`)
+            }
+        }
         loadNFTs();
     }
 
-    let clicked = false; //So the x button and file input are not selected together
+    let clicked = false; //Prevents x button and file input from being selected together
     return (
         <FormContainer onSubmit={handleSubmit(listItemForSale)}>
             <header style={{fontSize:'35px', fontWeight: '600', marginBottom: '20px'}}>Sell Item</header>
@@ -130,6 +145,7 @@ export default function Sell() {
                         type="file"
                         style={{display: "none"}}
                         accept="image/*"
+                        onClick={(event)=>{(event.target as HTMLInputElement).value = ""}}
                         {...register('file', {required: true, onChange: (e) => handleFile(e)})}
                     />
                     {preview ? (
@@ -139,12 +155,12 @@ export default function Sell() {
                                 src = {preview}
                                 height="257px"
                                 width="350px"
-                            />  
+                            />
                             <DeleteButton 
                                 src = {deleteX}
                                 height="50px"
                                 onClick={() => {
-                                    setFileUrl(null)
+                                    setFileUrl("")
                                     setFilePreview(null)
                                     clicked=true;
                                 }}

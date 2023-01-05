@@ -1,10 +1,10 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {useParams} from 'react-router-dom'
 
 import {MarketplaceContext} from '../context/MarketplaceContext'
 import ListingItem from '../components/ListingItem'
-import dummyData from '../utils/dummyData'
+import dummyData from '../utils/dummyData' //For testing having lots of items
 
 export default function Store() {
     const { nfts,loadingState } = useContext(MarketplaceContext);

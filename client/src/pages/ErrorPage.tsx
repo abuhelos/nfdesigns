@@ -1,8 +1,9 @@
+import React from 'react'
 import { useRouteError } from "react-router-dom";
 import styled from 'styled-components'
 
 export default function ErrorPage() {
-  const error = useRouteError();
+  const error = useRouteError() as ErrorEvent
   console.error(error);
 
   return (
@@ -10,12 +11,12 @@ export default function ErrorPage() {
       <h1 style={{fontSize: '3rem', marginBottom: '10px'}}>Oops!</h1>
       <p style={{marginBottom: '10px'}}>Sorry, an unexpected error has occurred.</p>
       <p style={{opacity: '.7'}}>
-        <i>{error.statusText || error.message}</i>
       </p>
     </Error>
   );
 }
 
+{/* <i>{error.statusText || error.message}</i> */}
 const Error = styled.div`
     display: flex;
     flex-direction: column;
@@ -23,5 +24,4 @@ const Error = styled.div`
     justify-content: center;
     width: 100%;
     height: 100vh;
-
 `
