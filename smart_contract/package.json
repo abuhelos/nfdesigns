@@ -23,7 +23,7 @@
   "dependencies": {
     "@nomicfoundation/hardhat-network-helpers": "^1.0.7",
     "@nomiclabs/hardhat-ethers": "^2.2.2",
-    "@openzeppelin/contracts": "^4.7.3",
+    "@openzeppelin/contracts": "^4.8.1",
     "ethers": "^5.7.2"
   }
 }
