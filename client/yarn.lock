@@ -2838,10 +2838,10 @@ w3c-xmlserializer@^4.0.0:
   dependencies:
     xml-name-validator "^4.0.0"
 
-web3modal@^1.9.9:
-  version "1.9.11"
-  resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.9.11.tgz#6a2c3c66f2e183c21446a441a217f996b38a82b6"
-  integrity sha512-fJ8HAHKxS05DlyZIV1oFbA7cT+E2/keyN1E4Yuhb023qGQIXlnht2DtTH978DERYnAnX28wZchwnwpSUnTTmhg==
+web3modal@^1.9.12:
+  version "1.9.12"
+  resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.9.12.tgz#cb000888fa422a96e3df552d4784e347ba35efcc"
+  integrity sha512-RiLY2tNOEUCobtsMTmhwl/FoHZGxRZz7SSdLsh6qbbybPNUO0rFPY8xam9SpPwlLd2cUDGiWkLgDUJde0sHxdw==
   dependencies:
     detect-browser "^5.1.0"
     prop-types "^15.7.2"
