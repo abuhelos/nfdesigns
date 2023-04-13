@@ -21,7 +21,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.7",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^4.8.2",
     "ethers": "^5.7.2"
