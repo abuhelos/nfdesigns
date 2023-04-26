@@ -14,7 +14,7 @@
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.16.0",
     "chai": "^4.3.7",
     "hardhat": "^2.13.1",
     "ts-node": "^10.9.1",
